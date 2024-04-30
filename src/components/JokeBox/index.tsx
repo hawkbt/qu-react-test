@@ -12,8 +12,8 @@ const JokeBox = (props: JokeBoxProps) => {
   const onHeaderClick = ( ) => setOpen( o => !o )
 
   return (
-    <Card>
-      <CardHeader subheader={joke.type} title={joke.setup} onClick={onHeaderClick}/>
+    <Card >
+      <CardHeader subheader={joke.type} title={joke.setup} onClick={onHeaderClick} sx={{cursor: 'pointer'}}/>
       <Collapse in={open}>
         <CardContent>
           <Typography variant="body2">{joke.punchline}</Typography>
