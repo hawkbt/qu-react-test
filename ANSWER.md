@@ -1,0 +1,7 @@
+1. What's a closure? Where in the code is there a closure?
+  - A closure is a function that has access and can modify from the inside variables from outside the function. Basically Functional React allows you to do this with the props or event with the useEffect, or your own functions inside each component accesisng and mofiying data, in the ```src/components/JokesContainer/index.tsx``` you can see how we are accessing the variable "params" that is declared outside the UseEffect function and also how we are modifiying the others respecting the principle of no mutability.
+
+2. Which are the potential side-effects in any function? Could you point out any of these cases in
+your code? Are they expected? Can they be avoided?
+  - One side effect with this current implementation is that in the manual pagination i'm doing, becase of the API behabior, each request returns a random set of data so, like i said the pagination is not quite a pagination in terms of new data but just a request of new data, I make a validation that filters the duplicates and therefore if i do not have, after the filter, at least 10 elements i block the button to request more,
+  This can cause an inconsistency on the pagination itself, how can we avoid this? i believe if we just allos the API to use skip and take or a normal pagination through query params i believe this can be avoided and also make the development of the pagination easier because the abstraction will be on the backend and not on the client.
