@@ -5,8 +5,10 @@ import { useSearchParams } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import JokeBox from '../JokeBox'
 import { ChevronLeft, ChevronRight } from '@mui/icons-material'
+import LoadingJokes from '../loading/LoadingJokes'
 
 const JokesContainer = () => {
+  const [loading, setLoading] = useState(false)
   const [data, setData] = useState<Joke[]>([])
   const [dataHolder, setDataHolder] = useState<Joke[]>([])
   const [page, setPage] = useState(1)
@@ -14,11 +16,18 @@ const JokesContainer = () => {
 
   useEffect(() => {
     const getData = async () => {
-      const type = (params.get('type') || '') as Joke['type']
-      const response = await getJokes({type})
-      setData(response)
-      setDataHolder(response)
-      setPage(1)
+      setLoading(true)
+      try {
+        const type = (params.get('type') || '') as Joke['type']
+        const response = await getJokes({type})
+        setData(response)
+        setDataHolder(response)
+        setPage(1)
+      } catch (error) {
+        throw new Error('something wrong happend')
+      }finally{
+        setLoading(false)
+      }
     }
     getData()
   }, [params])
@@ -41,6 +50,7 @@ const JokesContainer = () => {
   }
 
   return (
+    loading ? <LoadingJokes/> : 
     <Box>
       <Grid container spacing={4}>
         {data.map( (joke: Joke ) => 
@@ -49,7 +59,7 @@ const JokesContainer = () => {
           </Grid>
         )}
       </Grid>
-      <Stack flexWrap='nowrap' flexDirection='row' justifyContent='center' alignItems='center' gap={4} my={2}>
+      <Stack flexWrap='nowrap' flexDirection='row' justifyContent='center' alignItems='center' gap={4} my={4}>
         <Button variant='contained' onClick={() => onPageChange('prev')} disabled={page === 1}> 
           <ChevronLeft/>
         </Button>
